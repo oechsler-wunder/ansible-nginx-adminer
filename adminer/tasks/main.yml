@@ -1,0 +1,14 @@
+---
+- name: Prepare adminer directory
+  file: path=/var/www/adminer state=directory
+
+- name: Download latest adminer
+  get_url: url=http://www.adminer.org/latest.php dest=/var/www/adminer/adminer.php
+
+- name: Add adminer nginx configuration
+  template:
+    src=nginx_adminer.conf.j2
+    dest=/etc/nginx/conf.d/nginx_adminer.conf
+  notify:
+    - restart nginx
+    - restart php-fpm
